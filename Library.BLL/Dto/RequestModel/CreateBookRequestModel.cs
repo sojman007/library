@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.BLL.Dto.RequestModel
 {
-    public struct CreateBookRequestModel
+    public class CreateBookRequestModel
     {
         [Required (ErrorMessage = "Book title is required"), MinLength(1, ErrorMessage = "Book title cannot be less than 1 character")]
         public string Title { get; set; }

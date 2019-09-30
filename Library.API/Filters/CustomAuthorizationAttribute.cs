@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Library.API.FauxDb;
+using Library.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,23 +15,28 @@ namespace Library.API.Filters
 {
     public class CustomAuthorizationAttribute : TypeFilterAttribute
     {
-        public CustomAuthorizationAttribute(string claimType = "", string claimValue = "")
+        public CustomAuthorizationAttribute()
+            : base(typeof(CustomAuthorizationFilter))
+        {
+            Arguments = new object[] { };
+        }
+
+        public CustomAuthorizationAttribute(string claimType, string claimValue)
         : base(typeof(CustomAuthorizationFilter))
         {
-            if (string.IsNullOrEmpty(claimType) || string.IsNullOrWhiteSpace(claimValue))
-                Arguments = new object[] {null};
-            else 
-                Arguments = new object[]{new Claim(claimType, claimValue)};
+            Arguments = new object[] { new Claim(claimType, claimValue) };
         }
     }
 
     public class CustomAuthorizationFilter : IAuthorizationFilter
     {
         private readonly Claim _claim;
+        private readonly IUserService _userService;
 
-        public CustomAuthorizationFilter(Claim claim)
+        public CustomAuthorizationFilter(IUserService userService, Claim claim = null)
         {
             this._claim = claim;
+            this._userService = userService;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -43,7 +49,8 @@ namespace Library.API.Filters
             }
 
             string token = authorizationHeader.Substring(Constants.BearerText.Length).Trim();
-            if (!Db.UserTokens.Any(x => x.token == token))
+            var tokenIsValid = this._userService.TokenIsValid(token);
+            if (!tokenIsValid)
             {
                 context.Result = new UnauthorizedResult();
                 return;

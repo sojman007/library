@@ -18,8 +18,11 @@ namespace Library.DAL.Context
         {
             var userList = new List<ApplicationUser>()
             {
-                new ApplicationUser(){ Email = "admin@library.com", IsAdmin = true}
+                new ApplicationUser(){ Email = "admin@library.com", IsAdmin = true, Salt = "ONlnO9G4/rtDEHqSUYJ1Sw==", PasswordHash = "ONlnO9G4/rtDEHqSUYJ1Sw==", Name = "admin", },
+                new ApplicationUser(){ Email = "user@library.com", IsAdmin = false, Salt = "ONlnO9G4/rtDEHqSUYJ1Sw==", PasswordHash = "ONlnO9G4/rtDEHqSUYJ1Sw==", Name = "user", },
             };
+
+            
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Library.API.Controllers
         [HttpGet]
         [Route("allbooks")]
         [CustomAuthorization(ClaimTypes.Role, "admin")]
-        public IActionResult GetAllBooks(SearchBookRequestModel model, int page = 1, int size = 10)
+        public IActionResult GetAllBooks([FromQuery]SearchBookRequestModel model, int page = 1, int size = 10)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Library.API.Controllers
         [HttpGet]
         [Route("availablebooks")]
         [CustomAuthorization]
-        public IActionResult GetAllAvailableBooks(SearchBookRequestModel model, int page = 1, int size = 10)
+        public IActionResult GetAllAvailableBooks([FromQuery]SearchBookRequestModel model, int page = 1, int size = 10)
         {
             try
             {
@@ -115,8 +115,8 @@ namespace Library.API.Controllers
 
         [HttpPost]
         [Route("add")]
-        [CustomAuthorization]
-        public async Task<IActionResult> AddBook(CreateBookRequestModel model)
+        [CustomAuthorization(ClaimTypes.Role, "admin")]
+        public async Task<IActionResult> AddBook([FromBody]CreateBookRequestModel model)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace Library.API.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        [CustomAuthorization("", "")]
+        [CustomAuthorization]
         public async Task<IActionResult> DeleteBook(long bookId)
         {
             try

@@ -111,7 +111,7 @@ namespace Library.API.Controllers
         [HttpGet]
         [Route("allusers")]
         [CustomAuthorization(ClaimTypes.Role, "admin")]
-        public IActionResult AllUsers(SearchUserRequestModel model, int page = 1, int size = 10)
+        public IActionResult AllUsers([FromQuery]SearchUserRequestModel model, int page = 1, int size = 10)
         {
             try
             {

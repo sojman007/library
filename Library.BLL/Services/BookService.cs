@@ -29,11 +29,11 @@ namespace Library.BLL.Services
 
         public async Task<MiscResponse<Admin_BookResponseModel>> CreateBookAsync(CreateBookRequestModel model)
         {
-            var existingBook = this._bookRepo.Find(x => x.Title == model.Title && x.Author == model.Author);
+            var existingBook = this._bookRepo.Find(x => x.Title == model.Title && x.Author == model.Author).ToList();
             if (existingBook.Any())
                 throw new ArgumentException($"A book exists with the given title '{model.Title}' and author '{model.Author}'");
 
-            existingBook = this._bookRepo.Find(x => x.ISBN == model.ISBN);
+            existingBook = this._bookRepo.Find(x => x.ISBN == model.ISBN).ToList();
             if (existingBook.Any())
                 throw new ArgumentException($"A book exists with the given ISBN '{model.ISBN}'");
 
