@@ -19,10 +19,12 @@ namespace Library.API.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
+        private readonly IHttpContextAccessor _context;
 
-        public BooksController(IBookService bookService)
+        public BooksController(IBookService bookService, IHttpContextAccessor context)
         {
             this._bookService = bookService;
+            this._context = context;
         }
 
         [HttpGet]
@@ -74,10 +76,12 @@ namespace Library.API.Controllers
         [HttpPost]
         [Route("borrow")]
         [CustomAuthorization]
-        public async Task<IActionResult> BorrowBook(long bookId, string userEmail)
+        public async Task<IActionResult> BorrowBook(long bookId)
         {
             try
             {
+                var userEmail = this._context.HttpContext.User.Claims
+                    .Single(x => x.Type == ClaimTypes.Email).Value;
                 var borrowedBook = await this._bookService.BorrowBookAsync(bookId, userEmail);
                 return Ok(borrowedBook);
             }
@@ -95,10 +99,12 @@ namespace Library.API.Controllers
         [HttpPost]
         [Route("return")]
         [CustomAuthorization]
-        public async Task<IActionResult> ReturnBook(long bookId, string userEmail)
+        public async Task<IActionResult> ReturnBook(long bookId)
         {
             try
             {
+                var userEmail = this._context.HttpContext.User.Claims
+                    .Single(x => x.Type == ClaimTypes.Email).Value;
                 var returnedBook = await this._bookService.ReturnBookAsync(bookId, userEmail);
                 return Ok(returnedBook);
             }
@@ -138,7 +144,7 @@ namespace Library.API.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        [CustomAuthorization]
+        [CustomAuthorization(ClaimTypes.Role, "admin")]
         public async Task<IActionResult> DeleteBook(long bookId)
         {
             try
