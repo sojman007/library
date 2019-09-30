@@ -16,5 +16,19 @@ namespace Library.DAL.Context
 
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<UserTokens> Tokens { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ApplicationUser>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
+            modelBuilder.Entity<ApplicationUser>()
+                .HasIndex(x => x.PasswordHash);
+
+            modelBuilder.Entity<UserTokens>()
+                .HasIndex(x => x.UserId);
+            modelBuilder.Entity<UserTokens>()
+                .HasIndex(x => x.Token);
+        }
     }
 }

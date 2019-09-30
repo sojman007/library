@@ -4,14 +4,16 @@ using Library.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Library.DAL.Migrations
+namespace Library.DAL.Migrations.LibraryDb
 {
-    [DbContext(typeof(LibraryUserDbContext))]
-    partial class LibraryUserDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LibraryDbContext))]
+    [Migration("20190930141140_indexes")]
+    partial class indexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,27 +21,25 @@ namespace Library.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Library.DAL.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("Library.DAL.Entities.Book", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Author");
+
                     b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("ISBN");
 
-                    b.Property<bool>("IsAdmin");
+                    b.Property<bool>("IsAvailable");
 
                     b.Property<bool?>("IsDeleted");
 
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("Salt");
+                    b.Property<string>("Title");
 
                     b.Property<string>("UpdatedBy");
 
@@ -47,20 +47,24 @@ namespace Library.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
+                    b.HasIndex("Author");
+
+                    b.HasIndex("ISBN")
                         .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .HasFilter("[ISBN] IS NOT NULL");
 
-                    b.HasIndex("PasswordHash");
+                    b.HasIndex("Title");
 
-                    b.ToTable("Users");
+                    b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Library.DAL.Entities.UserTokens", b =>
+            modelBuilder.Entity("Library.DAL.Entities.BookHistory", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("BookId");
 
                     b.Property<string>("CreatedBy");
 
@@ -68,21 +72,21 @@ namespace Library.DAL.Migrations
 
                     b.Property<bool?>("IsDeleted");
 
-                    b.Property<string>("Token");
+                    b.Property<long>("LenderId");
+
+                    b.Property<bool>("Returned");
 
                     b.Property<string>("UpdatedBy");
 
                     b.Property<DateTime?>("UpdatedOn");
 
-                    b.Property<long>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Token");
+                    b.HasIndex("BookId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("LenderId");
 
-                    b.ToTable("Tokens");
+                    b.ToTable("BookHistories");
                 });
 #pragma warning restore 612, 618
         }

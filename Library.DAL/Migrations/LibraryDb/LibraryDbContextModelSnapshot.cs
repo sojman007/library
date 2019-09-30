@@ -45,6 +45,14 @@ namespace Library.DAL.Migrations.LibraryDb
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Author");
+
+                    b.HasIndex("ISBN")
+                        .IsUnique()
+                        .HasFilter("[ISBN] IS NOT NULL");
+
+                    b.HasIndex("Title");
+
                     b.ToTable("Books");
                 });
 
@@ -71,6 +79,10 @@ namespace Library.DAL.Migrations.LibraryDb
                     b.Property<DateTime?>("UpdatedOn");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("LenderId");
 
                     b.ToTable("BookHistories");
                 });
