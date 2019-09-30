@@ -133,8 +133,7 @@ namespace Library.API.Controllers
 
         [HttpPost]
         [Route("createuser")]
-        [AllowAnonymous]
-        //[CustomAuthorization(ClaimTypes.Role, "admin")]
+        [CustomAuthorization(ClaimTypes.Role, "admin")]
         public async Task<IActionResult> CreateUser(CreateUserRequestModel model)
         {
             try
