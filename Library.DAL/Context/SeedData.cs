@@ -23,8 +23,8 @@ namespace Library.DAL.Context
             {
                 var userList = new List<ApplicationUser>()
                 {
-                    new ApplicationUser() { Email = "admin@library.com", IsAdmin = true, Salt = "ONlnO9G4/rtDEHqSUYJ1Sw==", PasswordHash = "ONlnO9G4/rtDEHqSUYJ1Sw==", Name = "admin", }, // password = loremipsum
-                    new ApplicationUser() { Email = "user@library.com", IsAdmin = false, Salt = "ONlnO9G4/rtDEHqSUYJ1Sw==", PasswordHash = "ONlnO9G4/rtDEHqSUYJ1Sw==", Name = "user", }, // password = loremipsum
+                    new ApplicationUser() { Email = "admin@library.com", IsAdmin = true, Salt = "Atf2bqNh22FLc+z+7ARXMQ==", PasswordHash = "1MQ8A8iOXlU/ViSqxrStAygbex5t4OkvYtebeVzK7iI=", Name = "admin", }, // password = loremipsum
+                    new ApplicationUser() { Email = "user@library.com", IsAdmin = false, Salt = "Atf2bqNh22FLc+z+7ARXMQ==", PasswordHash = "1MQ8A8iOXlU/ViSqxrStAygbex5t4OkvYtebeVzK7iI=", Name = "user", }, // password = loremipsum
                 };
 
                 dbContext.Users.AddRange(userList);
